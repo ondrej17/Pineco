@@ -1,5 +1,7 @@
-import objects.AppPanel;
-import objects.ToolBar;
+import objects.panel.AppPanel;
+import objects.toolbar.ToolBar;
+import objects.toolbar.ToolbarEvent;
+import objects.toolbar.ToolbarListener;
 
 import javax.swing.*;
 import java.awt.*;
@@ -36,25 +38,35 @@ public class MainFrame extends JFrame {
         gc.gridy = 0; // first row
 
             // first column
-            gc.weightx = 0.2;
+            gc.weightx = 1;
             gc.weighty = 1;
             gc.gridx = 0;
             gc.anchor = GridBagConstraints.CENTER;
-            gc.insets = new Insets(0, 0, 0, 0);
+            gc.insets = new Insets(10, 10, 10, 10);
             add(toolbar, gc);
 
             // second column
-            gc.weightx = 6;
+            gc.weightx = 5;
             gc.weighty = 1;
             gc.gridx = 1;
             gc.anchor = GridBagConstraints.CENTER;
-            gc.insets = new Insets(0, 0, 0, 0);
+            gc.insets = new Insets(10, 10, 10, 10);
             add(appPanel, gc);
+
+        // if something happens in toolbar, do this:
+        toolbar.setToolbarListener(new ToolbarListener() {
+            @Override
+            public void toolbarEventOccured(ToolbarEvent e) {
+                if (e.isAddListItemBtnClicked()) {
+                    appPanel.addListItem("New Note"); // new note needs to be taken from a Text Field
+                }
+            }
+        });
 
 
         // set size of new window
         setMinimumSize(new Dimension(500, 600));
-        //setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);
+        setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);
 
         // set what program should do when closing window
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

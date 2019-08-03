@@ -1,19 +1,36 @@
-package objects;
+package objects.toolbar;
 
 import javax.swing.*;
+import javax.tools.Tool;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.concurrent.ForkJoinPool;
 
 public class ToolBar extends JPanel {
 
-    // all components in toolbar
+    // needed objects
     private GridBagConstraints gc;
+    private ToolbarListener toolbarListener;
+
+    // objects on welcome toolbar
     private JLabel welcomeLabel = new JLabel("Welcome ToolBar");
     private JButton welcomeBtn = new JButton("Welcome Button");
+
+    // objects on todos toolbar
     private JButton todosBtn = new JButton("Todos Button");
-    private JButton notesBtn = new JButton("Notes Button");
+
+    // objects on notes toolbar
+    private JButton addListItemBtn = new JButton("Add Note");
+
+    // objects on calendar toolbar
     private JButton calendarBtn = new JButton("Calendar Button");
 
+    // constructor
     public ToolBar() {
+
+        // set borders and title
+        this.setBorder(BorderFactory.createTitledBorder("Toolbar"));
 
         // set layout
         setLayout(new GridBagLayout());
@@ -38,6 +55,20 @@ public class ToolBar extends JPanel {
         gc.insets = new Insets(0, 0, 0, 0);
         add(welcomeBtn, gc);
 
+        // set actions to all buttons
+        addListItemBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                boolean addListItemBtnClicked = true;
+
+                ToolbarEvent ev = new ToolbarEvent(this, addListItemBtnClicked);
+
+                if (toolbarListener != null) {
+                    toolbarListener.toolbarEventOccured(ev);
+                }
+            }
+        });
+
     }
 
     // after clicking App -> Todos it creates toolbar for Todos
@@ -52,7 +83,7 @@ public class ToolBar extends JPanel {
         todosBtn.setVisible(true);
 
         // hide those components of toolbar, which are not used in Todos
-        notesBtn.setVisible(false);
+        addListItemBtn.setVisible(false);
         calendarBtn.setVisible(false);
 
         // set up todos things
@@ -71,7 +102,7 @@ public class ToolBar extends JPanel {
         welcomeBtn.setVisible(false);
 
         // unhide those components of toolbar, which are used in Notes
-        notesBtn.setVisible(true);
+        addListItemBtn.setVisible(true);
 
         // hide those components of toolbar, which are not used in Notes
         todosBtn.setVisible(false);
@@ -81,7 +112,7 @@ public class ToolBar extends JPanel {
         gc.gridy = 2;
         gc.anchor = GridBagConstraints.CENTER;
         gc.insets = new Insets(0, 0, 0, 0);
-        add(notesBtn, gc);
+        add(addListItemBtn, gc);
     }
 
     public void prepareCalendarToolbar() {
@@ -96,12 +127,17 @@ public class ToolBar extends JPanel {
 
         // hide those components of toolbar, which are not used in Notes
         todosBtn.setVisible(false);
-        notesBtn.setVisible(false);
+        addListItemBtn.setVisible(false);
 
         gc.gridy = 2;
         gc.anchor = GridBagConstraints.CENTER;
         gc.insets = new Insets(0, 0, 0, 0);
         add(calendarBtn, gc);
     }
+
+    public void setToolbarListener(ToolbarListener listener) {
+        this.toolbarListener = listener;
+    }
+
 }
 
