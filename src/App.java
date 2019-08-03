@@ -8,12 +8,10 @@ public class App {
     public static void main(String[] args) {
 
 //        // redirecting output in logFile.txt
-//        try
-//        {
+//        try {
 //            System.setOut(new PrintStream(new File("logFile.txt")));
 //        }
-//        catch(IOException e)
-//        {
+//        catch(IOException e) {
 //            System.out.println("File logFile.txt cannot be created...");
 //        }
 

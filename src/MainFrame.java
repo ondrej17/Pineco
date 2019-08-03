@@ -1,17 +1,16 @@
-import objects.AppContainer;
+import objects.AppPanel;
 import objects.ToolBar;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.PropertyChangeListener;
 
 public class MainFrame extends JFrame {
 
     // components of MainFrame
     private ToolBar toolbar; // on the left
-    private AppContainer container; // on the right, contains calendar, todos or notes
+    private AppPanel appPanel; // on the right, contains calendar, todos or notes
 
     // constructor of MainFrame
     public MainFrame() {
@@ -30,7 +29,7 @@ public class MainFrame extends JFrame {
 
         // set components
         toolbar = new ToolBar();
-        container = new AppContainer();
+        appPanel = new AppPanel();
         setJMenuBar(createMenuBar());
 
         // add components to gridLayout
@@ -50,7 +49,7 @@ public class MainFrame extends JFrame {
             gc.gridx = 1;
             gc.anchor = GridBagConstraints.CENTER;
             gc.insets = new Insets(0, 0, 0, 0);
-            add(container, gc);
+            add(appPanel, gc);
 
 
         // set size of new window
@@ -83,10 +82,12 @@ public class MainFrame extends JFrame {
         menuBar.add(helpMenu);
 
         // create menuItems in appMenu
+        JMenuItem calendar = new JMenuItem("Calendar");
         JMenuItem notes = new JMenuItem("Notes");
         JMenuItem todos = new JMenuItem("To-Do");
 
         // add menuItems to appMenu
+        appMenu.add(calendar);
         appMenu.add(notes);
         appMenu.add(todos);
 
@@ -94,10 +95,18 @@ public class MainFrame extends JFrame {
         // add menuItems to other menus
 
         // set up actionListener for each item
+        calendar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                appPanel.prepareCalendarPanel();
+                toolbar.prepareCalendarToolbar();
+            }
+        });
+
         notes.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                container.prepareNotesPanel();
+                appPanel.prepareNotesPanel();
                 toolbar.prepareNotesToolbar();
             }
         });
@@ -105,7 +114,7 @@ public class MainFrame extends JFrame {
         todos.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                container.prepareTodosPanel();
+                appPanel.prepareTodosPanel();
                 toolbar.prepareTodosToolbar();
             }
         });
