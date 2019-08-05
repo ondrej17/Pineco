@@ -22,6 +22,8 @@ public class ToolBar extends JPanel {
     private JTextArea noteField = new JTextArea(6,30);
     private JButton addListItemBtn = new JButton("Add Note");
     private JButton delListItemBtn = new JButton("Delete Note");
+    // TODO: 8/5/19 add 'change color of background of note' function
+
 
     // objects on calendar toolbar
     private JButton calendarBtn = new JButton("Calendar Button");
