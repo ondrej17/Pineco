@@ -1,11 +1,9 @@
 package objects.toolbar;
 
 import javax.swing.*;
-import javax.tools.Tool;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.concurrent.ForkJoinPool;
 
 public class ToolBar extends JPanel {
 
@@ -21,7 +19,9 @@ public class ToolBar extends JPanel {
     private JButton todosBtn = new JButton("Todos Button");
 
     // objects on notes toolbar
+    private JTextArea noteField = new JTextArea(6,30);
     private JButton addListItemBtn = new JButton("Add Note");
+    private JButton delListItemBtn = new JButton("Delete Note");
 
     // objects on calendar toolbar
     private JButton calendarBtn = new JButton("Calendar Button");
@@ -30,7 +30,10 @@ public class ToolBar extends JPanel {
     public ToolBar() {
 
         // set borders and title
-        this.setBorder(BorderFactory.createTitledBorder("Toolbar"));
+        setBorder(BorderFactory.createTitledBorder("Toolbar"));
+
+        // set width of toolbar
+
 
         // set layout
         setLayout(new GridBagLayout());
@@ -60,11 +63,26 @@ public class ToolBar extends JPanel {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 boolean addListItemBtnClicked = true;
+                boolean delListItemBtnClicked = false;
 
-                ToolbarEvent ev = new ToolbarEvent(this, addListItemBtnClicked);
+                ToolbarEvent ev = new ToolbarEvent(this, addListItemBtnClicked, delListItemBtnClicked);
 
                 if (toolbarListener != null) {
-                    toolbarListener.toolbarEventOccured(ev);
+                    toolbarListener.toolbarEventOcurred(ev);
+                }
+            }
+        });
+
+        delListItemBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                boolean addListItemBtnClicked = false;
+                boolean delListItemBtnClicked = true;
+
+                ToolbarEvent ev = new ToolbarEvent(this, addListItemBtnClicked, delListItemBtnClicked);
+
+                if (toolbarListener != null) {
+                    toolbarListener.toolbarEventOcurred(ev);
                 }
             }
         });
@@ -83,7 +101,9 @@ public class ToolBar extends JPanel {
         todosBtn.setVisible(true);
 
         // hide those components of toolbar, which are not used in Todos
+        noteField.setVisible(false);
         addListItemBtn.setVisible(false);
+        delListItemBtn.setVisible(false);
         calendarBtn.setVisible(false);
 
         // set up todos things
@@ -102,19 +122,35 @@ public class ToolBar extends JPanel {
         welcomeBtn.setVisible(false);
 
         // unhide those components of toolbar, which are used in Notes
+        noteField.setVisible(true);
         addListItemBtn.setVisible(true);
+        delListItemBtn.setVisible(true);
 
         // hide those components of toolbar, which are not used in Notes
         todosBtn.setVisible(false);
         calendarBtn.setVisible(false);
 
-        // set up notes things
-        gc.gridy = 2;
+        // set up notes buttons
+        gc.gridy = 0;
+        gc.gridx = 0;
+        gc.anchor = GridBagConstraints.CENTER;
+        gc.insets = new Insets(0, 0, 0, 0);
+        add(noteField, gc);
+
+        gc.gridy = 1;
+        gc.gridx = 0;
         gc.anchor = GridBagConstraints.CENTER;
         gc.insets = new Insets(0, 0, 0, 0);
         add(addListItemBtn, gc);
+
+        gc.gridy = 2;
+        gc.gridx = 0;
+        gc.anchor = GridBagConstraints.CENTER;
+        gc.insets = new Insets(0, 0, 0, 0);
+        add(delListItemBtn, gc);
     }
 
+    // after clicking App -> Calendar it creates toolbar for Calendar
     public void prepareCalendarToolbar() {
         System.out.println("Preparing Calendar Toolbar");
 
@@ -127,7 +163,9 @@ public class ToolBar extends JPanel {
 
         // hide those components of toolbar, which are not used in Notes
         todosBtn.setVisible(false);
+        noteField.setVisible(false);
         addListItemBtn.setVisible(false);
+        delListItemBtn.setVisible(false);
 
         gc.gridy = 2;
         gc.anchor = GridBagConstraints.CENTER;
@@ -135,9 +173,17 @@ public class ToolBar extends JPanel {
         add(calendarBtn, gc);
     }
 
+    // listener needs to be set up for toolbar
     public void setToolbarListener(ToolbarListener listener) {
         this.toolbarListener = listener;
     }
 
+    public String getNoteText() {
+        return noteField.getText();
+    }
+
+    public void clearNoteField() {
+        noteField.setText("");
+    }
 }
 

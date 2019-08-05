@@ -46,7 +46,7 @@ public class MainFrame extends JFrame {
             add(toolbar, gc);
 
             // second column
-            gc.weightx = 5;
+            gc.weightx = 1;
             gc.weighty = 1;
             gc.gridx = 1;
             gc.anchor = GridBagConstraints.CENTER;
@@ -56,13 +56,18 @@ public class MainFrame extends JFrame {
         // if something happens in toolbar, do this:
         toolbar.setToolbarListener(new ToolbarListener() {
             @Override
-            public void toolbarEventOccured(ToolbarEvent e) {
+            public void toolbarEventOcurred(ToolbarEvent e) {
                 if (e.isAddListItemBtnClicked()) {
-                    appPanel.addListItem("New Note"); // new note needs to be taken from a Text Field
+                    String newNote = toolbar.getNoteText();
+                    appPanel.addListItem(newNote);
+                    toolbar.clearNoteField();
+                }
+
+                if (e.isDelListItemBtnClicked()) {
+                    appPanel.removeMarkedItem();
                 }
             }
         });
-
 
         // set size of new window
         setMinimumSize(new Dimension(500, 600));

@@ -6,12 +6,14 @@ import java.util.EventObject;
 public class ToolbarEvent extends EventObject {
 
     private boolean addListItemBtnClicked;
+    private boolean delListItemBtnClicked;
 
-    public ToolbarEvent(Object source, boolean addListItemBtnClicked) {
+    public ToolbarEvent(Object source, boolean addListItemBtnClicked, boolean delListItemBtnClicked) {
 
         super(source);
 
         this.addListItemBtnClicked = addListItemBtnClicked;
+        this.delListItemBtnClicked = delListItemBtnClicked;
     }
 
 
@@ -21,5 +23,13 @@ public class ToolbarEvent extends EventObject {
 
     public void setAddListItemBtnClicked(boolean addListItemBtnClicked) {
         this.addListItemBtnClicked = addListItemBtnClicked;
+    }
+
+    public boolean isDelListItemBtnClicked() {
+        return delListItemBtnClicked;
+    }
+
+    public void setDelListItemBtnClicked(boolean delListItemBtnClicked) {
+        this.delListItemBtnClicked = delListItemBtnClicked;
     }
 }

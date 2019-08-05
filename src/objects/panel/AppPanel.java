@@ -94,6 +94,9 @@ public class AppPanel extends JPanel {
 
         // set up notes things
         add(list, BorderLayout.CENTER);
+        list.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        list.setLayoutOrientation(JList.VERTICAL);
+        list.setVisibleRowCount(10);
 
     }
 
@@ -126,7 +129,17 @@ public class AppPanel extends JPanel {
         add(calendarLabel2);
     }
 
+    // functions for List
     public void addListItem(String note) {
         listModel.addElement(note);
     }
+
+    public void removeMarkedItem() {
+        int index = list.getSelectedIndex();
+        if (index != -1) {
+            listModel.removeElementAt(index);
+        }
+
+    }
+
 }
