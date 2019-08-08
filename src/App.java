@@ -15,6 +15,16 @@ public class App {
 //            System.out.println("File logFile.txt cannot be created...");
 //        }
 
+        // setting Look and Feel
+        try {
+
+            // system Look and Feel!
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        }
+        catch (Exception exc) {
+            // Do nothing...
+        }
+
         // we need this in case multi-threading in code
         SwingUtilities.invokeLater(new Runnable() {
             // need to override run method !
