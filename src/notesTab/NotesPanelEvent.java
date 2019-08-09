@@ -4,9 +4,11 @@ import java.util.EventObject;
 
 public class NotesPanelEvent extends EventObject {
 
+    // variables that stores info anout which button was clicked
     private boolean addClicked;
     private boolean delClicked;
 
+    // constructor of EVENT
     public NotesPanelEvent(Object source, boolean addClicked, boolean delClicked) {
 
         super(source);

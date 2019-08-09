@@ -4,75 +4,135 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class NotesPanel extends JPanel {
 
     private NotesPanelListener notesPanelListener;
     private final GridBagConstraints gcPanel;
+    private final JLabel noteNameLabel;
+    private final JTextField noteNameField;
+    private final JLabel noteFieldLabel;
+    private final JScrollPane noteScrollPanel;
     private final JTextArea noteField;
     private final JButton addBtn;
     private final JButton delBtn;
-    private DefaultListModel listModel;
-    private JList list;
+    private final JScrollPane listScrollPanel;
+    private DefaultListModel<String> listModel;
+    private JList<String> list;
+    private JLabel colorLabel;
+    private JList colorList;
 
+    // these colors we have available
+    private final String colors[] = {"grey", "green", "red"};
 
     // constructor
     public NotesPanel() {
 
         // set layout
-        this.setLayout(new GridBagLayout());
+        setLayout(new GridBagLayout());
         gcPanel = new GridBagConstraints();
-        gcPanel.fill = GridBagConstraints.BOTH;
 
         // create components of NotesPanel
-        listModel = new DefaultListModel();
-        list = new JList(listModel);
-        noteField = new JTextArea(6, 30);
+        listModel = new DefaultListModel<>();
+        list = new JList<>(listModel);
+
+        colorLabel = new JLabel("Note Color");
+        colorList = new JList(colors);
+        colorList.setSelectedIndex(0);
+
+        noteNameLabel = new JLabel("Note Title:");
+        noteNameField = new JTextField(100);
+        noteFieldLabel = new JLabel("Note:");
+        noteField = new JTextArea();
+        noteScrollPanel = new JScrollPane(noteField);
+        listScrollPanel = new JScrollPane(list);
         addBtn = new JButton("Add Note");
         delBtn = new JButton("Delete Note");
 
+        // set note field
+        noteScrollPanel.setPreferredSize(new Dimension(500, 200));
+        noteField.setLineWrap(true);
+        noteField.setWrapStyleWord(true);
+
         // set list
-        list.setPreferredSize(new Dimension(200, 200));
+        listScrollPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        listScrollPanel.setPreferredSize(new Dimension(500, 200));
         list.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-        list.setLayoutOrientation(JList.VERTICAL);
-        list.setVisibleRowCount(10);
+        list.setLayoutOrientation(JList.VERTICAL_WRAP);
+        list.setVisibleRowCount(-1);
+        list.setCellRenderer(new CustomCellRenderer());
 
         // add components to layout
         // LEFT PART - toolbar
-        // add toolbar things to toolbar
-        gcPanel.gridx = 0;
-        gcPanel.gridy = 0;
-        gcPanel.weighty = 1;
-        gcPanel.anchor = GridBagConstraints.CENTER;
-        gcPanel.insets = new Insets(5, 5, 5, 5);
-        add(noteField, gcPanel);
+        gcPanel.gridx = 0;      gcPanel.gridy = 0;
+        gcPanel.weightx = 0.1;    gcPanel.weighty = 0.1;
+        gcPanel.insets = new Insets(10, 0, 10, 5);
+        gcPanel.fill = GridBagConstraints.NONE;
+        gcPanel.anchor = GridBagConstraints.LINE_END;
+        add(noteNameLabel, gcPanel);
 
-        gcPanel.gridx = 0;
-        gcPanel.gridy = 1;
-        gcPanel.weighty = 1;
+        gcPanel.gridx = 1;      gcPanel.gridy = 0;
+        gcPanel.weightx = 1;    gcPanel.weighty = 0.1;
+        gcPanel.insets = new Insets(10, 5, 10, 10);
+        gcPanel.fill = GridBagConstraints.BOTH;
+        gcPanel.anchor = GridBagConstraints.LINE_START;
+        add(noteNameField, gcPanel);
+
+        gcPanel.gridx = 0;      gcPanel.gridy = 1;
+        gcPanel.weightx = 0.1;    gcPanel.weighty = 1;
+        gcPanel.insets = new Insets(10, 0, 10, 5);
+        gcPanel.fill = GridBagConstraints.NONE;
+        gcPanel.anchor = GridBagConstraints.FIRST_LINE_END;
+        add(noteFieldLabel, gcPanel);
+
+        gcPanel.gridx = 1;      gcPanel.gridy = 1;
+        gcPanel.weightx = 1;    gcPanel.weighty = 1;
+        gcPanel.insets = new Insets(10, 5, 10, 10);
+        gcPanel.fill = GridBagConstraints.BOTH;
+        gcPanel.anchor = GridBagConstraints.LINE_START;
+        add(noteScrollPanel, gcPanel);
+
+        gcPanel.gridx = 0;      gcPanel.gridy = 2;
+        gcPanel.weightx = 0.1;    gcPanel.weighty = 1;
+        gcPanel.insets = new Insets(10, 0, 10, 5);
+        gcPanel.fill = GridBagConstraints.NONE;
+        gcPanel.anchor = GridBagConstraints.FIRST_LINE_END;
+        add(colorLabel, gcPanel);
+
+        gcPanel.gridx = 1;      gcPanel.gridy = 2;
+        gcPanel.weightx = 1;    gcPanel.weighty = 0.5;
+        gcPanel.insets = new Insets(10, 5, 10, 10);
+        gcPanel.fill = GridBagConstraints.NONE;
+        gcPanel.anchor = GridBagConstraints.FIRST_LINE_START;
+        add(colorList, gcPanel);
+
+        gcPanel.gridx = 1;      gcPanel.gridy = 4;
+        gcPanel.weightx = 1;    gcPanel.weighty = 1;
+        gcPanel.insets = new Insets(20,  20, 20, 20);
+        gcPanel.fill = GridBagConstraints.NONE;
         gcPanel.anchor = GridBagConstraints.CENTER;
-        gcPanel.insets = new Insets(5, 5, 5, 5);
         add(addBtn, gcPanel);
 
-        gcPanel.gridx = 0;
-        gcPanel.gridy = 2;
-        gcPanel.weighty = 1;
+        gcPanel.gridx = 1;      gcPanel.gridy = 4;
+        gcPanel.weightx = 1;    gcPanel.weighty = 1;
+        gcPanel.insets = new Insets(20, 20, 20, 20);
+        gcPanel.fill = GridBagConstraints.NONE;
         gcPanel.anchor = GridBagConstraints.CENTER;
-        gcPanel.insets = new Insets(5, 5, 5, 5);
         add(delBtn, gcPanel);
 
         // RIGHT PART - list
-        gcPanel.gridheight = 3;
-        gcPanel.gridx = 1;
-        gcPanel.weightx = 1;
-        gcPanel.weighty = 1;
-
-        gcPanel.gridy = 0;
+        gcPanel.gridx = 2;      gcPanel.gridy = 0;
+        gcPanel.gridheight = 5;
+        gcPanel.weightx = 4;    gcPanel.weighty = 1;
+        gcPanel.insets = new Insets(20, 20, 20, 20);
+        gcPanel.fill = GridBagConstraints.BOTH;
         gcPanel.anchor = GridBagConstraints.CENTER;
-        gcPanel.insets = new Insets(5, 5, 5, 5);
-        add(list, gcPanel);
+        add(listScrollPanel, gcPanel);
 
-        // set actions to all buttons
+        // ACTIONS OF BUTTONS
+        // if addBtn is clicked, it triggers this NotesPanelEvent
         addBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -88,6 +148,7 @@ public class NotesPanel extends JPanel {
             }
         });
 
+        // if delBtn is clicked, it triggers this NotesPanelEvent
         delBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -121,21 +182,39 @@ public class NotesPanel extends JPanel {
         });
     }
 
-    // functions
+    // function that sets listener !
     public void setNotesPanelListener(NotesPanelListener listener) {
         this.notesPanelListener = listener;
     }
 
+    // function that adds note to list
     public void addListItem() {
-        String note = noteField.getText();
 
-        listModel.addElement(note);
+        // add only non-empty note
+        if (noteField.getText().trim().length() != 0) {
+            // getting actual time
+            Date date = new Date( );
+            SimpleDateFormat ft = new SimpleDateFormat ("'['dd.MM.yyyy 'at' hh:mm:ss']'");
 
-        noteField.setText("");
+            // create new string that will be note
+            ListItem note = new ListItem(ft.format(date), noteField.getText());
+
+            // add note to the list
+            listModel.addElement(note.toString());
+
+            // clear note field
+            noteField.setText("");
+        }
+
     }
 
+    // function that deletes selected note from list
     private void delListItem() {
+
+        // get index of selected note
         int index = list.getSelectedIndex();
+
+        // remove that note
         if (index != -1) {
             listModel.removeElementAt(index);
         }

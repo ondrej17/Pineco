@@ -4,6 +4,7 @@ import notesTab.NotesPanel;
 import todosTab.TodosPanel;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class MainFrame extends JFrame {
 
@@ -13,7 +14,8 @@ public class MainFrame extends JFrame {
         // configuration of main frame
         setTitle("Order");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(600, 400);
+        setMinimumSize(new Dimension(600, 600));
+        setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);
 
         // create menubar on top of frame
         setJMenuBar(createMenuBar());
@@ -25,8 +27,8 @@ public class MainFrame extends JFrame {
         tabs.setUI(new CustomTabbedPaneUI());
 
         // add panels to each tab
-        tabs.add("Calendar", new CalendarPanel());
         tabs.add("Notes", new NotesPanel());
+        tabs.add("Calendar", new CalendarPanel());
         tabs.add("To-Do", new TodosPanel());
 
         // add tabs to frame
