@@ -19,8 +19,8 @@ public class NotesPanel extends JPanel {
     private final JButton addBtn;
     private final JButton delBtn;
     private final JScrollPane listScrollPanel;
-    //private DefaultListModel<String> listModel;
-    //private JList<String> list;
+    private DefaultListModel listModel;
+    private NoteListPanel list;
     private JLabel colorLabel;
     private JList colorList;
 
@@ -37,11 +37,11 @@ public class NotesPanel extends JPanel {
         gcPanel = new GridBagConstraints();
 
         // create components of NotesPanel
-        noteList = new NoteListPanel();
-        noteList.setBorder(BorderFactory.createLineBorder(Color.red));
-        noteList.setPreferredSize(new Dimension(800, 600));
-        //listModel = new DefaultListModel<>();
-        //list = new JList<>(listModel);
+        //noteList = new NoteListPanel();
+        //noteList.setBorder(BorderFactory.createLineBorder(Color.red));
+        //noteList.setPreferredSize(new Dimension(500, 200));
+        listModel = new DefaultListModel();
+        list = new NoteListPanel(listModel);
 
         colorLabel = new JLabel("Note Color");
         colorList = new JList(colors);
@@ -52,7 +52,7 @@ public class NotesPanel extends JPanel {
         noteFieldLabel = new JLabel("Note:");
         noteField = new JTextArea();
         noteScrollPanel = new JScrollPane(noteField);
-        listScrollPanel = new JScrollPane(noteList);
+        listScrollPanel = new JScrollPane(list);
         addBtn = new JButton("Add Note");
         delBtn = new JButton("Delete Note");
 
@@ -63,11 +63,11 @@ public class NotesPanel extends JPanel {
 
         // set list
         listScrollPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        listScrollPanel.setSize(new Dimension(500, 200));
-        //list.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-        //list.setLayoutOrientation(JList.VERTICAL_WRAP);
-        //list.setVisibleRowCount(-1);
-        //list.setCellRenderer(new CustomCellRenderer());
+        listScrollPanel.setPreferredSize(new Dimension(500, 200));
+        list.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        list.setLayoutOrientation(JList.VERTICAL_WRAP);
+        list.setVisibleRowCount(-1);
+        list.setCellRenderer(new CustomCellRenderer());
 
         // add components to layout
         // LEFT PART - toolbar
@@ -131,7 +131,7 @@ public class NotesPanel extends JPanel {
         gcPanel.gridx = 2;      gcPanel.gridy = 0;
         gcPanel.gridheight = 6;
         gcPanel.weightx = 4;    gcPanel.weighty = 1;
-        gcPanel.insets = new Insets(20, 20, 20, 20);
+        gcPanel.insets = new Insets(10, 10, 10, 10);
         gcPanel.fill = GridBagConstraints.BOTH;
         gcPanel.anchor = GridBagConstraints.CENTER;
         add(listScrollPanel, gcPanel);
@@ -200,17 +200,13 @@ public class NotesPanel extends JPanel {
             // getting actual time
             Date date = new Date( );
 
-            // create new string that will be note
-            //ListItem note = new ListItem(noteNameField.getText(), date, noteField.getText());
-
             // add note to the list
-            noteList.addElement(noteNameField.getText(), date, noteField.getText());
-            System.out.println(noteNameField.getText());
-            System.out.println(date);
-            System.out.println(noteField.getText());
+            list.addElement(noteNameField.getText(), date, noteField.getText());
 
             // clear note field
             noteField.setText("");
+
+            noteNameField.setText("");
         }
 
     }
@@ -219,11 +215,11 @@ public class NotesPanel extends JPanel {
     private void delListItem() {
 
         // get index of selected note
-        //int index = list.getSelectedIndex();
+        int index = list.getSelectedIndex();
 
         // remove that note
-        //if (index != -1) {
-        //    listModel.removeElementAt(index);
-        //}
+        if (index != -1) {
+            listModel.removeElementAt(index);
+        }
     }
 }

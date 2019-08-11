@@ -11,6 +11,8 @@ public class NoteListPanelItem extends JPanel {
     private JTextField dateField;
     private JTextArea bodyField;
 
+    private GridBagConstraints gc;
+
     private SimpleDateFormat ft = new SimpleDateFormat ("dd.MM.yyyy 'at' hh:mm:ss");
 
     public NoteListPanelItem(String title, Date date, String body) {
@@ -19,19 +21,32 @@ public class NoteListPanelItem extends JPanel {
         dateField = new JTextField(ft.format(date));
         bodyField = new JTextArea(body);
 
-        setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        setBackground(Color.BLUE);
+        setBorder(BorderFactory.createLineBorder(Color.YELLOW));
 
-        setLayout(new FlowLayout());
+        setLayout(new GridBagLayout());
+        gc = new GridBagConstraints();
 
-        add(titleField);
-        add(dateField);
-        add(bodyField);
+        gc.gridx = 0;
+        gc.gridy = 0;
+        gc.insets = new Insets(5, 5, 5, 5);
+        gc.fill = GridBagConstraints.BOTH;
+        gc.anchor = GridBagConstraints.CENTER;
+        add(titleField, gc);
+
+        gc.gridx = 0;
+        gc.gridy = 1;
+        gc.insets = new Insets(5, 5, 5, 5);
+        gc.fill = GridBagConstraints.BOTH;
+        gc.anchor = GridBagConstraints.CENTER;
+        add(dateField, gc);
+
+        gc.gridx = 0;
+        gc.gridy = 2;
+        gc.insets = new Insets(5, 5, 5, 5);
+        gc.fill = GridBagConstraints.BOTH;
+        gc.anchor = GridBagConstraints.CENTER;
+        add(bodyField, gc);
 
         setVisible(true);
-
-        System.out.println(title);
-        System.out.println(date);
-        System.out.println(body);
     }
 }
