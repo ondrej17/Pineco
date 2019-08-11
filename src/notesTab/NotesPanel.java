@@ -115,7 +115,7 @@ public class NotesPanel extends JPanel {
         gcPanel.anchor = GridBagConstraints.CENTER;
         add(addBtn, gcPanel);
 
-        gcPanel.gridx = 1;      gcPanel.gridy = 4;
+        gcPanel.gridx = 1;      gcPanel.gridy = 5;
         gcPanel.weightx = 1;    gcPanel.weighty = 1;
         gcPanel.insets = new Insets(20, 20, 20, 20);
         gcPanel.fill = GridBagConstraints.NONE;
@@ -124,7 +124,7 @@ public class NotesPanel extends JPanel {
 
         // RIGHT PART - list
         gcPanel.gridx = 2;      gcPanel.gridy = 0;
-        gcPanel.gridheight = 5;
+        gcPanel.gridheight = 6;
         gcPanel.weightx = 4;    gcPanel.weighty = 1;
         gcPanel.insets = new Insets(20, 20, 20, 20);
         gcPanel.fill = GridBagConstraints.BOTH;
@@ -194,13 +194,12 @@ public class NotesPanel extends JPanel {
         if (noteField.getText().trim().length() != 0) {
             // getting actual time
             Date date = new Date( );
-            SimpleDateFormat ft = new SimpleDateFormat ("'['dd.MM.yyyy 'at' hh:mm:ss']'");
 
             // create new string that will be note
-            ListItem note = new ListItem(ft.format(date), noteField.getText());
+            ListItem note = new ListItem(noteNameField.getText(), date, noteField.getText());
 
             // add note to the list
-            listModel.addElement(note.toString());
+            listModel.addElement(note.getNoteDetail());
 
             // clear note field
             noteField.setText("");

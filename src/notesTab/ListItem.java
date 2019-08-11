@@ -1,22 +1,46 @@
 package notesTab;
 
 import javax.swing.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class ListItem extends JTextArea {
 
-    public ListItem(String date, String note) {
+    private String title;
+    private Date date;
+    private String note;
+    private SimpleDateFormat ft = new SimpleDateFormat ("dd.MM.yyyy 'at' hh:mm:ss");
 
-        append(date);
+    public ListItem(String title, Date date, String note) {
+
+        this.title = title;
+        this.date = date;
+        this.note = note;
+
+        // do something with the note
+        append(title);
         append("\n");
         append(note);
 
     }
 
-    public String toString() {
-        String string = "";
+    public String getNoteDetail() {
+        return ft.format(date) + " - " + title;
+    }
 
-        string = "note";
+    public Date getNoteDate() {
+        return date;
+    }
 
-        return string;
+    public String getNoteTitle() {
+        return title;
+    }
+
+    public String getNoteBody() {
+        return note;
+    }
+
+    public void saveNote() {
+
     }
 }
