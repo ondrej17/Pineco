@@ -19,10 +19,12 @@ public class NotesPanel extends JPanel {
     private final JButton addBtn;
     private final JButton delBtn;
     private final JScrollPane listScrollPanel;
-    private DefaultListModel<String> listModel;
-    private JList<String> list;
+    //private DefaultListModel<String> listModel;
+    //private JList<String> list;
     private JLabel colorLabel;
     private JList colorList;
+
+    private NoteListPanel noteList;
 
     // these colors we have available
     private final String colors[] = {"grey", "green", "red"};
@@ -35,8 +37,11 @@ public class NotesPanel extends JPanel {
         gcPanel = new GridBagConstraints();
 
         // create components of NotesPanel
-        listModel = new DefaultListModel<>();
-        list = new JList<>(listModel);
+        noteList = new NoteListPanel();
+        noteList.setBorder(BorderFactory.createLineBorder(Color.red));
+        noteList.setPreferredSize(new Dimension(800, 600));
+        //listModel = new DefaultListModel<>();
+        //list = new JList<>(listModel);
 
         colorLabel = new JLabel("Note Color");
         colorList = new JList(colors);
@@ -47,22 +52,22 @@ public class NotesPanel extends JPanel {
         noteFieldLabel = new JLabel("Note:");
         noteField = new JTextArea();
         noteScrollPanel = new JScrollPane(noteField);
-        listScrollPanel = new JScrollPane(list);
+        listScrollPanel = new JScrollPane(noteList);
         addBtn = new JButton("Add Note");
         delBtn = new JButton("Delete Note");
 
         // set note field
-        noteScrollPanel.setPreferredSize(new Dimension(500, 200));
+        //noteScrollPanel.setPreferredSize(new Dimension(500, 200));
         noteField.setLineWrap(true);
         noteField.setWrapStyleWord(true);
 
         // set list
         listScrollPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        listScrollPanel.setPreferredSize(new Dimension(500, 200));
-        list.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-        list.setLayoutOrientation(JList.VERTICAL_WRAP);
-        list.setVisibleRowCount(-1);
-        list.setCellRenderer(new CustomCellRenderer());
+        listScrollPanel.setSize(new Dimension(500, 200));
+        //list.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        //list.setLayoutOrientation(JList.VERTICAL_WRAP);
+        //list.setVisibleRowCount(-1);
+        //list.setCellRenderer(new CustomCellRenderer());
 
         // add components to layout
         // LEFT PART - toolbar
@@ -196,10 +201,13 @@ public class NotesPanel extends JPanel {
             Date date = new Date( );
 
             // create new string that will be note
-            ListItem note = new ListItem(noteNameField.getText(), date, noteField.getText());
+            //ListItem note = new ListItem(noteNameField.getText(), date, noteField.getText());
 
             // add note to the list
-            listModel.addElement(note.getNoteDetail());
+            noteList.addElement(noteNameField.getText(), date, noteField.getText());
+            System.out.println(noteNameField.getText());
+            System.out.println(date);
+            System.out.println(noteField.getText());
 
             // clear note field
             noteField.setText("");
@@ -211,11 +219,11 @@ public class NotesPanel extends JPanel {
     private void delListItem() {
 
         // get index of selected note
-        int index = list.getSelectedIndex();
+        //int index = list.getSelectedIndex();
 
         // remove that note
-        if (index != -1) {
-            listModel.removeElementAt(index);
-        }
+        //if (index != -1) {
+        //    listModel.removeElementAt(index);
+        //}
     }
 }
