@@ -1,6 +1,7 @@
 package notesTab;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.JTextComponent;
@@ -11,7 +12,6 @@ class EditableJList extends JList {
     public EditableJList(EditableListModel listModel) {
         setModel(listModel);
         addMouseListener();
-        //setFixedCellWidth(50);
         setFixedCellHeight(100);
 
         // set our custom cell renderer
@@ -102,11 +102,13 @@ class EditableJList extends JList {
             else {
                 tc.setBackground(list.getBackground());
                 tc.setForeground(list.getForeground());
+                //tc.setBackground(Color.LIGHT_GRAY);
             }
 
             tc.setEnabled(list.isEnabled());
+            tc.setEditable(true);
             tc.setFont(list.getFont());
-            tc.setBorder(null);
+            tc.setBorder(new LineBorder(Color.BLACK));
 
             return (Component) value;
         }

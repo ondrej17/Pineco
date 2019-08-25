@@ -4,8 +4,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class NotesPanel extends JPanel {
 
@@ -22,11 +20,6 @@ public class NotesPanel extends JPanel {
     private final JScrollPane listScrollPanel;
     EditableJList.EditableListModel listModel;
     EditableJList list;
-    private JLabel colorLabel;
-    private JList colorList;
-
-    // these colors we have available
-    private final String colors[] = {"grey", "green", "red"};
 
     // constructor
     public NotesPanel() {
@@ -36,15 +29,8 @@ public class NotesPanel extends JPanel {
         gcPanel = new GridBagConstraints();
 
         // create components of NotesPanel
-        //noteList = new NoteListPanel();
-        //noteList.setBorder(BorderFactory.createLineBorder(Color.red));
-        //noteList.setPreferredSize(new Dimension(500, 200));
         listModel = new EditableJList.EditableListModel();
         list = new EditableJList(listModel);
-
-        colorLabel = new JLabel("Note Color");
-        colorList = new JList(colors);
-        colorList.setSelectedIndex(0);
 
         noteNameLabel = new JLabel("Note Title:");
         noteNameField = new JTextArea();
@@ -57,7 +43,7 @@ public class NotesPanel extends JPanel {
         delBtn = new JButton("Delete Note");
 
         // set note field
-        noteNameScrollPanel.setPreferredSize(new Dimension(500, 100));
+        noteNameScrollPanel.setPreferredSize(new Dimension(500, 50));
         noteScrollPanel.setPreferredSize(new Dimension(500, 200));
         noteField.setLineWrap(true);
         noteField.setWrapStyleWord(true);
@@ -71,55 +57,41 @@ public class NotesPanel extends JPanel {
         // add components to layout
         // LEFT PART - toolbar
         gcPanel.gridx = 0;      gcPanel.gridy = 0;
-        gcPanel.weightx = 0.1;    gcPanel.weighty = 0.1;
+        gcPanel.weightx = 0.1;    gcPanel.weighty = 0.5;
         gcPanel.insets = new Insets(10, 0, 10, 5);
         gcPanel.fill = GridBagConstraints.NONE;
         gcPanel.anchor = GridBagConstraints.FIRST_LINE_END;
         add(noteNameLabel, gcPanel);
 
         gcPanel.gridx = 1;      gcPanel.gridy = 0;
-        gcPanel.weightx = 1;    gcPanel.weighty = 1;
+        gcPanel.weightx = 1;    gcPanel.weighty = 0.5;
         gcPanel.insets = new Insets(10, 5, 10, 10);
         gcPanel.fill = GridBagConstraints.BOTH;
         gcPanel.anchor = GridBagConstraints.LINE_START;
         add(noteNameScrollPanel, gcPanel);
 
         gcPanel.gridx = 0;      gcPanel.gridy = 1;
-        gcPanel.weightx = 0.1;    gcPanel.weighty = 1;
+        gcPanel.weightx = 0.1;    gcPanel.weighty = 20;
         gcPanel.insets = new Insets(10, 0, 10, 5);
         gcPanel.fill = GridBagConstraints.NONE;
         gcPanel.anchor = GridBagConstraints.FIRST_LINE_END;
         add(noteFieldLabel, gcPanel);
 
         gcPanel.gridx = 1;      gcPanel.gridy = 1;
-        gcPanel.weightx = 1;    gcPanel.weighty = 1;
+        gcPanel.weightx = 1;    gcPanel.weighty = 20;
         gcPanel.insets = new Insets(10, 5, 10, 10);
         gcPanel.fill = GridBagConstraints.BOTH;
         gcPanel.anchor = GridBagConstraints.LINE_START;
         add(noteScrollPanel, gcPanel);
 
-        gcPanel.gridx = 0;      gcPanel.gridy = 2;
-        gcPanel.weightx = 0.1;    gcPanel.weighty = 1;
-        gcPanel.insets = new Insets(10, 0, 10, 5);
-        gcPanel.fill = GridBagConstraints.NONE;
-        gcPanel.anchor = GridBagConstraints.FIRST_LINE_END;
-        add(colorLabel, gcPanel);
-
-        gcPanel.gridx = 1;      gcPanel.gridy = 2;
-        gcPanel.weightx = 1;    gcPanel.weighty = 0.5;
-        gcPanel.insets = new Insets(10, 5, 10, 10);
-        gcPanel.fill = GridBagConstraints.NONE;
-        gcPanel.anchor = GridBagConstraints.FIRST_LINE_START;
-        add(colorList, gcPanel);
-
-        gcPanel.gridx = 1;      gcPanel.gridy = 4;
+        gcPanel.gridx = 1;      gcPanel.gridy = 3;
         gcPanel.weightx = 1;    gcPanel.weighty = 1;
         gcPanel.insets = new Insets(20,  20, 20, 20);
         gcPanel.fill = GridBagConstraints.NONE;
         gcPanel.anchor = GridBagConstraints.CENTER;
         add(addBtn, gcPanel);
 
-        gcPanel.gridx = 1;      gcPanel.gridy = 5;
+        gcPanel.gridx = 1;      gcPanel.gridy = 4;
         gcPanel.weightx = 1;    gcPanel.weighty = 1;
         gcPanel.insets = new Insets(20, 20, 20, 20);
         gcPanel.fill = GridBagConstraints.NONE;
@@ -128,8 +100,8 @@ public class NotesPanel extends JPanel {
 
         // RIGHT PART - list
         gcPanel.gridx = 2;      gcPanel.gridy = 0;
-        gcPanel.gridheight = 6;
-        gcPanel.weightx = 4;    gcPanel.weighty = 1;
+        gcPanel.gridheight = 5;
+        gcPanel.weightx = 5;    gcPanel.weighty = 1;
         gcPanel.insets = new Insets(10, 10, 10, 10);
         gcPanel.fill = GridBagConstraints.BOTH;
         gcPanel.anchor = GridBagConstraints.CENTER;
@@ -198,7 +170,7 @@ public class NotesPanel extends JPanel {
         if (noteField.getText().trim().length() != 0) {
 
             // add note to the list
-            listModel.addElement(new ListItem(noteNameField.getText()));
+            listModel.addElement(new ListItem(noteNameField.getText(), noteField.getText()));
 
             // clear note field
             noteField.setText("");
