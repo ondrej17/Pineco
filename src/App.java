@@ -19,7 +19,7 @@ public class App {
         try {
 
             // system Look and Feel!
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         }
         catch (Exception exc) {
             // Do nothing...
