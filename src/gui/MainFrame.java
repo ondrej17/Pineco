@@ -8,16 +8,14 @@ import gui.todosTab.TodosPanel;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicTabbedPaneUI;
 import java.awt.*;
+import java.io.File;
 
 public class MainFrame extends JFrame {
-
-    private Controller controller;
 
     // constructor of gui.MainFrame
     public MainFrame() {
 
-        // set up controller
-        controller = new Controller();
+
 
         // configuration of main frame
         setTitle("Order");

@@ -1,7 +1,12 @@
 package gui.notesTab;
 
+import model.Note;
+
 import javax.swing.*;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import java.awt.*;
+import java.util.List;
 
 public class NoteTable extends JTable {
 
@@ -12,6 +17,7 @@ public class NoteTable extends JTable {
 
         dataTableModel = new NoteTableModel();
         table = new JTable(dataTableModel);
+        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         setLayout(new BorderLayout());
 
@@ -19,15 +25,31 @@ public class NoteTable extends JTable {
 
     }
 
-    public void loadNotes() {
-        // app will load notes from config file to notePanel
+    @Override
+    public int getSelectedRow() {
+        return table.getSelectedRow();
     }
 
     public void addNote(String title, String body) {
-        dataTableModel.addNote(new Object[]{title + "\n" + body});
+        dataTableModel.addNote(new Note(title, body));
+        dataTableModel.fireTableDataChanged();
     }
 
     public void removeNote(int index) {
         dataTableModel.removeNote(index);
+        dataTableModel.fireTableDataChanged();
+    }
+
+    public void setData(List<Note> notes) {
+        dataTableModel.setData(notes);
+    }
+
+    public void refreshData() {
+        dataTableModel.fireTableDataChanged();
+    }
+
+    public void clearData() {
+        dataTableModel.clearData();
+        dataTableModel.fireTableDataChanged();
     }
 }

@@ -1,12 +1,18 @@
 package gui.notesTab;
 
+import controller.Controller;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.io.File;
 
 public class NotesPanel extends JPanel {
+
+
+    private Controller controller;
 
     private NotesPanelListener notesPanelListener;
     private final JLabel noteNameLabel;
@@ -23,6 +29,9 @@ public class NotesPanel extends JPanel {
     // constructor
     public NotesPanel() {
 
+        // set up controller
+        controller = new Controller();
+
         // create components of NotesPanel
         noteTable = new NoteTable();
         noteNameLabel = new JLabel("Note Title:");
@@ -37,6 +46,10 @@ public class NotesPanel extends JPanel {
         // set mnemonics
         addBtn.setMnemonic(KeyEvent.VK_A);
         delBtn.setMnemonic(KeyEvent.VK_D);
+
+        // load notes from storage
+        controller.loadFromFile(new File("notesStorage.txt"));
+        noteTable.setData(controller.getNotes());
 
         // ACTIONS OF BUTTONS
         // if addBtn is clicked, it triggers this NotesPanelEvent
@@ -96,8 +109,8 @@ public class NotesPanel extends JPanel {
 
 
         // set note field
-        noteNameScrollPanel.setPreferredSize(new Dimension(500, 50));
-        noteBodyScrollPanel.setPreferredSize(new Dimension(500, 200));
+        noteNameScrollPanel.setPreferredSize(new Dimension(300, 50));
+        noteBodyScrollPanel.setPreferredSize(new Dimension(300, 200));
         noteField.setLineWrap(true);
         noteField.setWrapStyleWord(true);
         noteNameField.setLineWrap(true);
@@ -156,7 +169,7 @@ public class NotesPanel extends JPanel {
         // RIGHT PART - list
         gcPanel.gridx = 2;      gcPanel.gridy = 0;
         gcPanel.gridheight = 5;
-        gcPanel.weightx = 5;    gcPanel.weighty = 1;
+        gcPanel.weightx = 10;    gcPanel.weighty = 1;
         gcPanel.insets = new Insets(10, 10, 10, 10);
         gcPanel.fill = GridBagConstraints.BOTH;
         gcPanel.anchor = GridBagConstraints.CENTER;
@@ -179,6 +192,8 @@ public class NotesPanel extends JPanel {
             //String note = "<html>" + noteNameField.getText() + "<br>" + "<br>" + noteField.getText() + "</html>";
 
             noteTable.addNote(noteNameField.getText(), noteField.getText());
+            noteTable.refreshData();
+            controller.saveToFile(new File("notesStorage.txt"));
 
             // clear note field
             noteField.setText("");
@@ -192,10 +207,15 @@ public class NotesPanel extends JPanel {
 
         // get index of selected note
         int index = noteTable.getSelectedRow();
+        System.out.println(index);
 
         // remove that note
         if (index != -1) {
             noteTable.removeNote(index);
+
+            noteTable.refreshData();
+            controller.saveToFile(new File("notesStorage.txt"));
         }
+
     }
 }

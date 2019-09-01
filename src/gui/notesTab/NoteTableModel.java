@@ -72,19 +72,25 @@ public class NoteTableModel extends AbstractTableModel {
                 break;
             default:
                 return;
-
         }
+        fireTableCellUpdated(row, col);
     }
 
     public void setData(List<Note> lights) {
         this.notes = lights;
     }
 
-    public void addNote(Object[] objects) {
-
+    public void addNote(Note note) {
+        notes.add(note);
     }
 
     public void removeNote(int index) {
         notes.remove(index);
     }
+
+    public void clearData() {
+        notes.removeAll(notes);
+    }
+
+
 }
