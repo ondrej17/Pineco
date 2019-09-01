@@ -18,7 +18,7 @@ public class MainFrame extends JFrame {
 
 
         // configuration of main frame
-        setTitle("Order");
+        setTitle("Pineco");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setMinimumSize(new Dimension(600, 600));
         setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);
