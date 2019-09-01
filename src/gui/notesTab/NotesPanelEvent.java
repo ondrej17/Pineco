@@ -1,4 +1,4 @@
-package notesTab;
+package gui.notesTab;
 
 import java.util.EventObject;
 

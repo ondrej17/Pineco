@@ -1,4 +1,4 @@
-package calendarTab;
+package gui.calendarTab;
 
 import javax.swing.*;
 

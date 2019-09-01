@@ -1,4 +1,4 @@
-package todosTab;
+package gui.todosTab;
 
 import javax.swing.*;
 import java.awt.*;

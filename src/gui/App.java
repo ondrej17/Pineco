@@ -1,3 +1,5 @@
+package gui;
+
 import javax.swing.*;
 import java.io.File;
 import java.io.IOException;

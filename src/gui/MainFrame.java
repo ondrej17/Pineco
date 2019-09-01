@@ -1,15 +1,23 @@
-import calendarTab.CalendarPanel;
-import frameConfig.CustomTabbedPaneUI;
-import notesTab.NotesPanel;
-import todosTab.TodosPanel;
+package gui;
+
+import controller.Controller;
+import gui.calendarTab.CalendarPanel;
+import gui.notesTab.NotesPanel;
+import gui.todosTab.TodosPanel;
 
 import javax.swing.*;
+import javax.swing.plaf.basic.BasicTabbedPaneUI;
 import java.awt.*;
 
 public class MainFrame extends JFrame {
 
-    // constructor of MainFrame
+    private Controller controller;
+
+    // constructor of gui.MainFrame
     public MainFrame() {
+
+        // set up controller
+        controller = new Controller();
 
         // configuration of main frame
         setTitle("Order");
@@ -24,7 +32,7 @@ public class MainFrame extends JFrame {
         JTabbedPane tabs = new JTabbedPane();
 
         // set user interface for tabbed panel
-        tabs.setUI(new CustomTabbedPaneUI());
+        tabs.setUI(new BasicTabbedPaneUI());
 
         // add panels to each tab
         tabs.add("Notes", new NotesPanel());
