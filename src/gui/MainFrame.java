@@ -20,7 +20,7 @@ public class MainFrame extends JFrame {
         // configuration of main frame
         setTitle("Pineco");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setMinimumSize(new Dimension(600, 600));
+        setMinimumSize(new Dimension(800, 600));
         setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);
 
         // create menubar on top of frame
@@ -39,6 +39,7 @@ public class MainFrame extends JFrame {
 
         // add tabs to frame
         getContentPane().add(tabs);
+
 
         // show the main frame
         setVisible(true);

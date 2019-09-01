@@ -19,6 +19,11 @@ public class NoteTable extends JTable {
         table = new JTable(dataTableModel);
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
+        table.setDefaultRenderer(String.class, new LineWrapCellRenderer());
+        table.setTableHeader(null);
+        table.getColumnModel().getColumn(0).setPreferredWidth(100);
+        table.getColumnModel().getColumn(1).setPreferredWidth(400);
+
         setLayout(new BorderLayout());
 
         add(new JScrollPane(table), BorderLayout.CENTER);

@@ -109,8 +109,8 @@ public class NotesPanel extends JPanel {
 
 
         // set note field
-        noteNameScrollPanel.setPreferredSize(new Dimension(300, 50));
-        noteBodyScrollPanel.setPreferredSize(new Dimension(300, 200));
+        noteNameScrollPanel.setPreferredSize(new Dimension(100, 50));
+        noteBodyScrollPanel.setPreferredSize(new Dimension(100, 200));
         noteField.setLineWrap(true);
         noteField.setWrapStyleWord(true);
         noteNameField.setLineWrap(true);
