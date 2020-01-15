@@ -29,10 +29,7 @@ public class Controller implements Initializable {
 
     /**
      * initialization of controller
-     * loads noteslibrary from file and sets notesListView
-     *
-     * @param location
-     * @param resources
+     * loads notesLibrary from file and sets notesListView
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -52,6 +49,7 @@ public class Controller implements Initializable {
      * method that return the name of file that is ude to store the notes
      */
     private String getFileWithNotes() {
+
         // TODO: how to make it run on Linux too?
         // Linux version ?
         // return "docs/notesStorage.json";
@@ -62,20 +60,33 @@ public class Controller implements Initializable {
 
     /**
      * method that is called when 'Add Note' is pressed in Notes Tab
-     * only adds new note when title and body are not empty
-     * saves a new note to json file
+     * only adds new note when title and body are not empty and note with same title is not in library
+     * then saves a new note to json file
      */
     public void addNoteBtnClicked() {
+
         if (!noteBodyTextArea.getText().isEmpty() && !noteTitleTextField.getText().isEmpty()) {
-            // add a new note to library
-            notesLibrary.addNewNote(noteTitleTextField.getText(), noteBodyTextArea.getText());
+            // current title of note
+            String currentTitle = noteTitleTextField.getText();
 
-            // add a title to notesListView
-            notesListView.getItems().add(noteTitleTextField.getText());
+            // check if currentNote is already in library
+            int isThereCurrentNote = 0;
+            for (String title : notesLibrary.getTitles()) {
+                if (title.equals(currentTitle)) {
+                    isThereCurrentNote = 1;
+                    break;
+                }
+            }
 
-            // save this new note to json file
-            notesLibrary.saveNewNoteToJson(noteTitleTextField.getText(),
-                                        notesLibrary.getBodyOfNote(noteTitleTextField.getText()));
+            if (isThereCurrentNote == 0) {
+                // add a new note to library (only if there is none note with same title)
+                notesLibrary.addNewNote(noteTitleTextField.getText(), noteBodyTextArea.getText());
+
+                // add a title to notesListView
+                notesListView.getItems().add(noteTitleTextField.getText());
+
+                notesListView.getSelectionModel().select(noteTitleTextField.getText());
+            }
         }
     }
 
@@ -85,6 +96,7 @@ public class Controller implements Initializable {
      * invokes saving new note to json file
      */
     public void clickedToNotesListView() {
+
         // find out which note was selected
         String selectedNote = notesListView.getSelectionModel().getSelectedItem();
         if (selectedNote != null) {
@@ -93,7 +105,7 @@ public class Controller implements Initializable {
             if (!noteTitleTextField.getText().equals("")) {
                 String currentTitle = noteTitleTextField.getText();
 
-                // check if selectedNote is already in library
+                // check if currentNote is already in library
                 int isThereCurrentNote = 0;
                 for (String title : notesLibrary.getTitles()) {
                     if (title.equals(currentTitle)) {
@@ -103,41 +115,44 @@ public class Controller implements Initializable {
                 }
 
                 if (isThereCurrentNote == 0) {
-                    // add a new note to library (only if there is none with this title)
+                    // add a new note (only if there is none with this title)
                     notesLibrary.addNewNote(currentTitle, noteBodyTextArea.getText());
 
                     // add a title to notesListView
                     notesListView.getItems().add(currentTitle);
-
-                    // save this new note to json file
-                    notesLibrary.saveNewNoteToJson(currentTitle, notesLibrary.getBodyOfNote(currentTitle));
                 }
             }
 
             // now a selected note can be shown
-            // but only when there is not
             noteTitleTextField.setText(selectedNote);
             noteBodyTextArea.setText(notesLibrary.getBodyOfNote(selectedNote));
         }
     }
 
     /**
-     * removes selected note from listview, notelibrary and json file
+     * removes selected note from notesListView, notesLibrary and json file
      */
     public void removeNoteBtnClicked() {
+
         // find selected notes in notesListView
         String selectedNote = notesListView.getSelectionModel().getSelectedItem();
 
         // remove it from notesListView
         notesListView.getItems().removeAll(selectedNote);
 
-        // remove it from library
+        // remove note
         notesLibrary.removeNote(selectedNote);
 
-        // remove selected note from json file
-        notesLibrary.removeNoteFromJson(selectedNote);
-
         // set title field and body text area
+        noteTitleTextField.setText("");
+        noteBodyTextArea.setText("");
+    }
+
+    /**
+     * clears both title text field and body text area of note
+     */
+    public void newNoteBtnClicked() {
+
         noteTitleTextField.setText("");
         noteBodyTextArea.setText("");
     }

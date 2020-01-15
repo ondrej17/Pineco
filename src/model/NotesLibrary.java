@@ -20,10 +20,9 @@ public class NotesLibrary {
 
     /**
      * constructor of class NotesLibrary
-     *
-     * @param file
      */
     public NotesLibrary(String file) {
+
         // this is file with notes
         this.fileWithNotes = file;
     }
@@ -32,6 +31,7 @@ public class NotesLibrary {
      * loads notes from JSON file that stores notes and adds them to our list of notes
      */
     public void loadNotes() {
+
         // Creating a JSONParser object
         JSONParser jsonParser = new JSONParser();
 
@@ -56,6 +56,7 @@ public class NotesLibrary {
      * methods returns list of titles of all notes that are in library
      */
     public List<String> getTitles() {
+
         List<String> titlesOfNotes = new ArrayList<String>();
         for (Note note : listOfNotes) {
             titlesOfNotes.add(note.getTitle());
@@ -64,12 +65,10 @@ public class NotesLibrary {
     }
 
     /**
-     * returns body of note
-     *
-     * @param title
-     * @return body of note
+     * returns body of note with given 'title'
      */
     public String getBodyOfNote(String title) {
+
         for (Note note : listOfNotes) {
             if (note.getTitle().equals(title)) {
                 return note.getBody();
@@ -80,22 +79,14 @@ public class NotesLibrary {
     }
 
     /**
-     * adds new note to library
-     *
-     * @param title
-     * @param body
+     * adds new note to library and to json file
      */
-    public void addNewNote(String title, String body) {
-        listOfNotes.add(new Note(title, body));
-    }
+    public void addNewNote(String currentTitle, String body) {
 
-    /**
-     * saves new note to json file
-     *
-     * @param currentTitle
-     * @param body
-     */
-    public void saveNewNoteToJson(String currentTitle, String body) {
+        // save note to library
+        listOfNotes.add(new Note(currentTitle, body));
+
+        // save note to json file as well
         // Creating a JSONParser object
         JSONParser jsonParser = new JSONParser();
 
@@ -107,37 +98,29 @@ public class NotesLibrary {
             jsonObject.put(currentTitle, body);
 
             // save jsonObject to json file
-            // try-with-resources statement based on post comment below :)
             try (FileWriter file = new FileWriter(this.fileWithNotes)) {
                 file.write(jsonObject.toJSONString());
-                // System.out.println("Successfully Copied JSON Object to File...");
-                // System.out.println("\nJSON Object: " + jsonObject);
             }
 
         } catch (IOException | ParseException e) {
             e.printStackTrace();
         }
-
     }
 
     /**
      * removes selected note from library
-     * @param selectedNote
      */
     public void removeNote(String selectedNote) {
+
+        // remove note from library
         for (Note note : listOfNotes) {
             if (note.getTitle().equals(selectedNote)) {
                 listOfNotes.remove(note);
                 break;
             }
         }
-    }
 
-    /**
-     * removes selected note from json file
-     * @param selectedNote
-     */
-    public void removeNoteFromJson(String selectedNote) {
+        // remove note from json file as well
         // Creating a JSONParser object
         JSONParser jsonParser = new JSONParser();
 
@@ -149,15 +132,13 @@ public class NotesLibrary {
             jsonObject.remove(selectedNote);
 
             // save jsonObject to json file
-            // try-with-resources statement based on post comment below :)
             try (FileWriter file = new FileWriter(this.fileWithNotes)) {
                 file.write(jsonObject.toJSONString());
-                // System.out.println("Successfully Copied JSON Object to File...");
-                // System.out.println("\nJSON Object: " + jsonObject);
             }
 
         } catch (IOException | ParseException e) {
             e.printStackTrace();
         }
     }
+
 }

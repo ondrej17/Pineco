@@ -11,8 +11,6 @@ public class Note {
 
     /**
      * constructor of class Note
-     * @param title
-     * @param body
      */
     public Note(String title, String body) {
         this.title = title;
@@ -21,7 +19,6 @@ public class Note {
 
     /**
      * returns title
-     * @return title of note
      */
     public String getTitle() {
         return title;
@@ -29,7 +26,6 @@ public class Note {
 
     /**
      * sets title of note
-     * @param title
      */
     public void setTitle(String title) {
         this.title = title;
@@ -37,7 +33,6 @@ public class Note {
 
     /**
      * returns body of note
-     * @return body of note
      */
     public String getBody() {
         return body;
@@ -45,7 +40,6 @@ public class Note {
 
     /**
      * sets body of note
-     * @param body
      */
     public void setBody(String body) {
         this.body = body;
