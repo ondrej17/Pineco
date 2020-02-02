@@ -2,7 +2,8 @@ package model;
 
 /**
  * class Note represents one particular note
- * it should have attributes like title, body, timestamp (maybe more) getters and setters
+ * it has attributes like title, body, timestamp (maybe more) getters and setters
+ * TODO: add more attributes to Note, e. g. time, tag
  */
 public class Note {
 

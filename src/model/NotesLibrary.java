@@ -141,4 +141,44 @@ public class NotesLibrary {
         }
     }
 
+    /**
+     * updates body of note with 'title'
+     */
+    public void updateNoteBody(String title, String body) {
+        int wasThereTitle = 0;
+
+        // update specific note
+        for (Note note : listOfNotes) {
+            if (note.getTitle().equals(title)) {
+                wasThereTitle = 1;       // this title was here
+                note.setBody(body);
+                break;
+            }
+        }
+
+        if (wasThereTitle == 1) {
+            // update note to json file as well
+            // Creating a JSONParser object
+            JSONParser jsonParser = new JSONParser();
+
+            try {
+                // Parsing the contents of the JSON file
+                JSONObject jsonObject = (JSONObject) jsonParser.parse(new FileReader(this.fileWithNotes));
+
+                // remove old version of this note from json object
+                jsonObject.remove(title);
+
+                // save new version of this note to json object
+                jsonObject.put(title, body);
+
+                // save jsonObject to json file
+                try (FileWriter file = new FileWriter(this.fileWithNotes)) {
+                    file.write(jsonObject.toJSONString());
+                }
+
+            } catch (IOException | ParseException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }

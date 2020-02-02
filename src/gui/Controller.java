@@ -15,7 +15,8 @@ import java.util.ResourceBundle;
  * main controller class
  */
 public class Controller implements Initializable {
-    // objects in application that we want to interact
+
+    // these objects are bind to javafx objects in GUI
     @FXML
     private ListView<String> notesListView;
     @FXML
@@ -25,7 +26,6 @@ public class Controller implements Initializable {
 
     // object that stores all notes
     private NotesLibrary notesLibrary;
-
 
     /**
      * initialization of controller
@@ -46,7 +46,7 @@ public class Controller implements Initializable {
     }
 
     /**
-     * method that return the name of file that is ude to store the notes
+     * method that return the name of json-file that is used to store the notes
      */
     private String getFileWithNotes() {
 
@@ -59,13 +59,15 @@ public class Controller implements Initializable {
     }
 
     /**
+     * *** method bound to FXML object
+     *
      * method that is called when 'Add Note' is pressed in Notes Tab
-     * only adds new note when title and body are not empty and note with same title is not in library
+     * only adds new note when title is not empty and note with same title is not in library
      * then saves a new note to json file
      */
     public void addNoteBtnClicked() {
 
-        if (!noteBodyTextArea.getText().isEmpty() && !noteTitleTextField.getText().isEmpty()) {
+        if (!noteTitleTextField.getText().isEmpty()) {
             // current title of note
             String currentTitle = noteTitleTextField.getText();
 
@@ -85,12 +87,15 @@ public class Controller implements Initializable {
                 // add a title to notesListView
                 notesListView.getItems().add(noteTitleTextField.getText());
 
+                // select this newly added note in list of notes
                 notesListView.getSelectionModel().select(noteTitleTextField.getText());
             }
         }
     }
 
     /**
+     * *** method bound to FXML object
+     *
      * methods that is called when there is click to notesListView
      * loads title and body of selected note to right panel
      * invokes saving new note to json file
@@ -101,9 +106,10 @@ public class Controller implements Initializable {
         String selectedNote = notesListView.getSelectionModel().getSelectedItem();
         if (selectedNote != null) {
 
-            // if there is a title, we need to save the note
+            // if there is a title (i. e. there is a note in edit mode), we need to save the note
             if (!noteTitleTextField.getText().equals("")) {
                 String currentTitle = noteTitleTextField.getText();
+                String currentBody = noteBodyTextArea.getText();
 
                 // check if currentNote is already in library
                 int isThereCurrentNote = 0;
@@ -116,10 +122,13 @@ public class Controller implements Initializable {
 
                 if (isThereCurrentNote == 0) {
                     // add a new note (only if there is none with this title)
-                    notesLibrary.addNewNote(currentTitle, noteBodyTextArea.getText());
+                    notesLibrary.addNewNote(currentTitle, currentBody);
 
                     // add a title to notesListView
                     notesListView.getItems().add(currentTitle);
+                } else {
+                    // if there is a note with currentTitle, update the body of note
+                    notesLibrary.updateNoteBody(currentTitle, currentBody);
                 }
             }
 
@@ -130,6 +139,8 @@ public class Controller implements Initializable {
     }
 
     /**
+     * *** method bound to FXML object
+     *
      * removes selected note from notesListView, notesLibrary and json file
      */
     public void removeNoteBtnClicked() {
@@ -149,6 +160,8 @@ public class Controller implements Initializable {
     }
 
     /**
+     * *** method bound to FXML object
+     *
      * clears both title text field and body text area of note
      */
     public void newNoteBtnClicked() {
@@ -157,5 +170,21 @@ public class Controller implements Initializable {
         noteBodyTextArea.setText("");
     }
 
+    /**
+     * *** method bound to FXML object
+     *
+     * updates the current note (also on close request)
+     * does not create new note (there is 'Add' button for this)
+     */
+    public void saveNoteBtnClicked() {
 
+        if (!noteTitleTextField.getText().equals("")) {
+
+            String currentTitle = noteTitleTextField.getText();
+            String currentBody = noteBodyTextArea.getText();
+
+            // title field is not empty:
+            notesLibrary.updateNoteBody(currentTitle, currentBody);
+        }
+    }
 }
